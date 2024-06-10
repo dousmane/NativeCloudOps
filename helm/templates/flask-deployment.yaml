@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-flask
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-flask
+    spec:
+      containers:
+      - name: flask
+        image: "{{ .Values.flask.image.repository }}:{{ .Values.flask.image.tag }}"   #dousmane/myflaskapp:latest
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: flask-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+spec:
+  selector:
+    app: flask
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  type: LoadBalancer

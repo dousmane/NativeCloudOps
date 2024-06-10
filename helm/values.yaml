@@ -1,0 +1,47 @@
+# Default values for myflaskapp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Flask configuration
+flask:
+  replicaCount: 1
+  image:
+    repository: yourdockerhub/flaskimage
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5000
+
+# PostgreSQL configuration
+postgresql:
+  enabled: true
+  image:
+    repository: postgres
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  postgresqlUsername: "username"
+  postgresqlPassword: "password"
+  postgresqlDatabase: "mydatabase"
+
+# Kubernetes service configuration
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 5000
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+affinity: {}
